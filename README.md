@@ -43,8 +43,6 @@ Trying to eat healthier but stuck wondering what or where to eat when hunger hit
 
 I am going to use the required technologies in the following ways.
 
-### Technologies
-
 - **HTML**  
   - Main structure for the app (login and chat pages).  
   - The login page will include:
