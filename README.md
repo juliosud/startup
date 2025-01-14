@@ -32,6 +32,7 @@ Trying to eat healthier but stuck wondering what or where to eat when hunger hit
 
 ![Design image](smarteats.png)
 
+Sequence diagram
 
 ```mermaid
 sequenceDiagram
