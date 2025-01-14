@@ -43,9 +43,11 @@ sequenceDiagram
 
 ### Key features
 
-- Describe your key feature
-- Describe your key feature
-- Describe your key feature
+- Interactive Chat: Provides AI assistant for nutritional guidance 
+- Goal based recommendations: Tailored meal and snack suggestions to match colorie and macro targets
+- Recipe and ingredient swapping: Provides recipe suggestions, or alternative ingredient for existing recipes based on user preferences
+- Restaurant integreation: Suggests meals at local restaurants that fit coloric and macro nutrient goals
+- Progress tracking: Adjusts the coloric and nutrient intake based on logged meals and remaining goals
 
 ### Technologies
 
