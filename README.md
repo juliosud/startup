@@ -1,4 +1,4 @@
-# Your startup name here
+# SmartEats AI
 
 [My Notes](notes.md)
 
