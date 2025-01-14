@@ -54,30 +54,32 @@ I am going to use the required technologies in the following ways.
 
 - **HTML**  
   - Main structure for the app (login and chat pages).  
-  - The login page will include user input forms and error messaging.  
+  - The login page will include:
+      1. user input forms
+      2. error messaging
   - The chat page will have sections for:
-    - Recommendations
-    - User inputs
-    - Dynamic display of macronutrient intake progress  
+    1. Recommendations
+    2. User inputs
+    3. Dynamic display of macronutrient intake progress  
 
 - **CSS**  
   - Used for style and design to ensure intuitive navigation and readability:  
-    1. Chat bubbles to differentiate user and app inputs/outputs.  
-    2. Dynamic progress bars for the macronutrient section.  
-    3. Adaptive layouts for mobile screens.  
+      1. Chat bubbles to differentiate user and app inputs/outputs
+      2. Dynamic progress bars for the macronutrient section
+      3. Adaptive layouts for mobile screens
 
 - **React**  
   - Handles the interactive front end. Features include:  
-    1. **ChatBox Component**: Manages real-time user interaction.  
-    2. **Recommendation Card Component**: Displays personalized meal suggestions.  
-    3. **Progress Tracker Component**: Dynamically updates based on user goals and logs.  
+    1. ChatBox (real-time user interaction) 
+    2. Recommendation Card (Displays meal suggestions)  
+    3. Progress Tracker (updates based on user goals and logs)  
   - State management to track user goals, meal logs, and chat history.  
 
 - **Service**  
   - Manages business logic with the following APIs:  
-    1. **User Authentication API**: Ensures secure login and profile management.  
-    2. **Logging API**: Handles meal logging and updates progress.  
-    3. **Recommendation API**: Generates personalized suggestions.  
+    1. User Authentication API (login and profile management) 
+    2. Logging API (Handles meal logging and updates progress)  
+    3. Recommendation API (Generates suggestions)
 
 - **DB/Login**  
   - Stores and retrieves important data:  
@@ -87,8 +89,9 @@ I am going to use the required technologies in the following ways.
     4. Chat history  
 
 - **WebSocket**  
-  - Enables real-time updates and communication in the chat interface.  
-  - Example Idea: Use WebSocket to update the progress tracker dynamically as the user logs meals or receives recommendations.
+  - real-time updates and communication in the chat interface.
+  - When user logs a meal, the app updates on the screen their colories and macros 
+
 
 
 ## 🚀 AWS deliverable
