@@ -50,12 +50,46 @@ sequenceDiagram
 
 I am going to use the required technologies in the following ways.
 
-- **HTML** - Main structure for app (login and chat pages). The login page will include user input forms and error messaging. The chat page will have a section for reccomendations, user inputs, and dynamic display of macro nutrient intake progress
-- **CSS** - will use for style and design for intuitive navigation and readability. 1) It will have chat bubbles to differentiate user and app inputs/outputs. 2) Dynamic progress bars for the macro nutrient section. 3) adaptive layouts for mobile screens.
-- **React** - Will handle interactive front end. Features include 1) ChatBox component, 2) Recommendation Card Component, 3) Progress Tracker Component. State management to track user goals and meal logs.
-- **Service** - This part will manage business logic: 1) User Auth, 2) Loggin API, 3) Reccomendation API
-- **DB/Login** - Stores and retrieves important data: 1) user profiles, 2) nutritional logs, 3) Restaurant data, 4) Chat History
-- **WebSocket** - ##################### I need an idea
+### Technologies
+
+- **HTML**  
+  - Main structure for the app (login and chat pages).  
+  - The login page will include user input forms and error messaging.  
+  - The chat page will have sections for:
+    - Recommendations
+    - User inputs
+    - Dynamic display of macronutrient intake progress  
+
+- **CSS**  
+  - Used for style and design to ensure intuitive navigation and readability:  
+    1. Chat bubbles to differentiate user and app inputs/outputs.  
+    2. Dynamic progress bars for the macronutrient section.  
+    3. Adaptive layouts for mobile screens.  
+
+- **React**  
+  - Handles the interactive front end. Features include:  
+    1. **ChatBox Component**: Manages real-time user interaction.  
+    2. **Recommendation Card Component**: Displays personalized meal suggestions.  
+    3. **Progress Tracker Component**: Dynamically updates based on user goals and logs.  
+  - State management to track user goals, meal logs, and chat history.  
+
+- **Service**  
+  - Manages business logic with the following APIs:  
+    1. **User Authentication API**: Ensures secure login and profile management.  
+    2. **Logging API**: Handles meal logging and updates progress.  
+    3. **Recommendation API**: Generates personalized suggestions.  
+
+- **DB/Login**  
+  - Stores and retrieves important data:  
+    1. User profiles  
+    2. Nutritional logs  
+    3. Restaurant data  
+    4. Chat history  
+
+- **WebSocket**  
+  - Enables real-time updates and communication in the chat interface.  
+  - Example Idea: Use WebSocket to update the progress tracker dynamically as the user logs meals or receives recommendations.
+
 
 ## 🚀 AWS deliverable
 
