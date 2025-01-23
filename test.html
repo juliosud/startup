@@ -1,65 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Scores</title>
-    <link rel="icon" href="favicon.ico" />
-  </head>
-  <body>
+<head>
+    <title>SmartEats.AI</title>
+</head>
+<body>
     <header>
-      <h1>Simon<sup>&reg;</sup></h1>
-
-      <nav>
-        <menu>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="play.html">Play</a></li>
-          <li><a href="scores.html">Scores</a></li>
-          <li><a href="about.html">About</a></li>
-        </menu>
-      </nav>
-
-      <hr />
+        <h1>SmartEats.AI</h1>
+        <nav>
+            <a href="index.html">Home</a> |
+            <a href="a.html">Explore Recipes</a>
+        </nav>
     </header>
 
     <main>
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Score</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>도윤 이</td>
-            <td>34</td>
-            <td>May 20, 2021</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Annie James</td>
-            <td>29</td>
-            <td>June 2, 2021</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>Gunter Spears</td>
-            <td>7</td>
-            <td>July 3, 2020</td>
-          </tr>
-        </tbody>
-      </table>
+        <section>
+            <h4>Your Calorie Table</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Calories</th>
+                        <th>Protein</th>
+                        <th>Carbs</th>
+                        <th>Fat</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2025-01-22</td>
+                        <td>2200</td>
+                        <td>136</td>
+                        <td>289</td>
+                        <td>63</td>
+                    </tr>
+                    <tr>
+                        <td>2025-01-21</td>
+                        <td>1800</td>
+                        <td>90</td>
+                        <td>200</td>
+                        <td>60</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <hr />
+
+        <section>
+            <h4>Explore Recipes</h4>
+            <p>Placeholder for 3rd party service calls (e.g., AI recipe suggestions).</p>
+            <form method="post">
+                <textarea name="recipeInput" placeholder="What would you like to eat?" required></textarea>
+                <button type="submit">Submit</button>
+            </form>
+        </section>
+        <hr />
+
+        <section>
+            <h4>WebSocket Real-Time Data</h4>
+            <p>Reminder: Don’t forget to log your lunch!</p>
+        </section>
     </main>
 
     <footer>
-      <hr />
-      <span class="text-reset">Author Name(s)</span>
-      <br />
-      <a href="https://github.com/webprogramming260/simon-html">GitHub</a>
+        <hr />
+        <span class="text-reset">j. ferreira</span>
+        <br />
+        <a href="https://github.com/juliosud/startup">GitHub</a>
     </footer>
-  </body>
+</body>
 </html>
