@@ -7,6 +7,7 @@
         <header>
             <h1>SmartEats.AI</h1>
             <nav>
+                <a href="index.html">Home</a> |
                 <a href="home.html">Home</a> |
                 <a href="meal_tracker.html">Meal Tracker</a>
             </nav>
@@ -71,7 +72,31 @@
                     </tr>
                 </tbody>
             </table>
-
+            <h4>Manual Meal Entry</h4>
+            
+            <form method="post">
+                <div>
+                    <label for="food">Food:</label>
+                    <input type="text" id="food" name="food" placeholder="Enter food name" required />
+                </div>
+                <div>
+                    <label for="calories">Calories:</label>
+                    <input type="number" id="calories" name="calories" placeholder="0" required />
+                </div>
+                <div>
+                    <label for="protein">Protein (g):</label>
+                    <input type="number" id="protein" name="protein" placeholder="0" required />
+                </div>
+                <div>
+                    <label for="carbs">Carbs (g):</label>
+                    <input type="number" id="carbs" name="carbs" placeholder="0" required />
+                </div>
+                <div>
+                    <label for="fat">Fat (g):</label>
+                    <input type="number" id="fat" name="fat" placeholder="0" required />
+                </div>
+                <button type="submit">Add Meal</button>
+            </form>
         </main>
 
         <footer>
