@@ -8,10 +8,11 @@
 - [Canvas](https://byu.instructure.com)
 - [MDN](https://developer.mozilla.org)
 
-## AWS Notes
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 ## HTML Notes
+index.html - serves as a default entry point for my app. Users automatically are redirected to that page
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Deploy process - I have to use a POSIX compliant console and I also have to have the deployFile.sh in my folder. HEre is the code I use to run it ./deployFiles.sh -k "/c/Users/juliosud/OneDrive - Church of Jesus Christ/Desktop/Winter 2025/CS 260/production.pem" -h smarteats.click -s startup
+
+VS code live server - great tool to debug my code. short cut is ctrl L+O
+

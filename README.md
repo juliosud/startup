@@ -95,15 +95,15 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **HTML pages** - I did not complete this part of the deliverable.
-- [ ] **Proper HTML element usage** - I did not complete this part of the deliverable.
-- [ ] **Links** - I did not complete this part of the deliverable.
-- [ ] **Text** - I did not complete this part of the deliverable.
-- [ ] **3rd party API placeholder** - I did not complete this part of the deliverable.
-- [ ] **Images** - I did not complete this part of the deliverable.
-- [ ] **Login placeholder** - I did not complete this part of the deliverable.
-- [ ] **DB data placeholder** - I did not complete this part of the deliverable.
-- [ ] **WebSocket placeholder** - I did not complete this part of the deliverable.
+- [x] **HTML pages** - COMPLETED - The pages are Login, Home, and meal tracker
+- [x] **Proper HTML element usage** - COMPLETED - for all my pages I properly used the elements as in the instructions and simon
+- [x] **Links** - COMPLETED - Included link for GitHub and between pages
+- [x] **Text** - COMPLETED - I have text between my pages
+- [x] **3rd party API placeholder** - COMPLETED - There is a space where user can update calories and withdraw values from table, such as update table
+- [x] **Images** - COMPLETED - Login page has an image
+- [x] **Login placeholder** - COMPLETED - the first default page is the login page
+- [x] **DB data placeholder** - COMPLETED - Meal Tracker page contains a table that can be updated by user
+- [x] **WebSocket placeholder** - COMPLETED - the Home page has a spot where app sends notifications to users
 
 ## 🚀 CSS deliverable
 
