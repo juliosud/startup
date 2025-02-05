@@ -16,3 +16,9 @@ Deploy process - I have to use a POSIX compliant console and I also have to have
 
 VS code live server - great tool to debug my code. short cut is ctrl L+O
 
+## CSS Notes
+
+Box containers - I wanted my app to have that look of mobile app, and this usually is achieved by wrapping some elements in boxes. Well, it ends up that it is much easier to do that, because not only can yo give a nice look to your app, but also you can create different classes to edit the styling for that given box
+
+Looking for inspiration - In class we discussed some debugging tools, and I was able to use the dev tool to see what other websites use for their styling and then gain inspiration from their work.
+
