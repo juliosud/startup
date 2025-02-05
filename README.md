@@ -109,9 +109,9 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [x]**Header, footer, and main content body** - COMPLETED - edited text and standardized format across pages
-- [x]**Navigation elements** - COMPLETED - Applied styles to different elements
-- [x]**Responsive to window resizing** - COMPLETED - The app auto resizes, including images
+-[x] **Header, footer, and main content body** - COMPLETED - edited text and standardized format across pages
+[x]  **Navigation elements** - COMPLETED - Applied styles to different elements
+[x]  **Responsive to window resizing** - COMPLETED - The app auto resizes, including images
 - [x] **Application elements** - COMPLETED - All elements have same formating across pages
 - [x] **Application text content** - COMPLETED - Applied different styles to text
 - [x] **Application images** - COMPLETED - only the login page has an image
