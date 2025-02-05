@@ -27,6 +27,7 @@ nav a:hover {
     background-color: rgba(190, 183, 183, 0.548);
 }
 
+
 /* BODY and MAIN */
 body {
     font-family: "Poppins", sans-serif;
@@ -46,7 +47,15 @@ main {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-
+img {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+    margin: auto;
+}
 
 button {
     background-color: #454646;
