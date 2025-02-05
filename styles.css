@@ -72,6 +72,29 @@ button a:hover {
 }
 
 
+/* TABLES */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #e1e1e1e7;
+    color: rgb(69, 65, 65);
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+
 /* FOOTER */
 footer {
     text-align: center;
