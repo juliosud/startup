@@ -109,13 +109,12 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Header, footer, and main content body** - I did not complete this part of the deliverable.
-- [ ] **Navigation elements** - I did not complete this part of the deliverable.
-- [ ] **Responsive to window resizing** - I did not complete this part of the deliverable.
-- [ ] **Application elements** - I did not complete this part of the deliverable.
-- [ ] **Application text content** - I did not complete this part of the deliverable.
-- [ ] **Application images** - I did not complete this part of the deliverable.
-
+- [x]**Header, footer, and main content body** - COMPLETED - edited text and standardized format across pages
+- [x]**Navigation elements** - COMPLETED - Applied styles to different elements
+- [x]**Responsive to window resizing** - COMPLETED - The app auto resizes, including images
+- [x] **Application elements** - COMPLETED - All elements have same formating across pages
+- [x] **Application text content** - COMPLETED - Applied different styles to text
+- [x] **Application images** - COMPLETED - only the login page has an image
 ## 🚀 React part 1: Routing deliverable
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
