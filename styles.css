@@ -1,12 +1,4 @@
-
-body {
-    font-family: "Poppins", sans-serif;
-    background-color: #f8f9fa;
-    margin: 0;
-    padding: 0;
-    color: #333;
-    line-height: 1.6;
-}
+/* HEADERS */
 
 header {
     background-color: #ffffffe7;
@@ -35,6 +27,16 @@ nav a:hover {
     background-color: rgba(190, 183, 183, 0.548);
 }
 
+/* BODY and MAIN */
+body {
+    font-family: "Poppins", sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    line-height: 1.6;
+}
+
 main {
     padding: 20px;
     max-width: 900px;
@@ -57,5 +59,16 @@ button {
 }
 
 button a:hover {
-    background-color: rgba(190, 183, 183, 0.548);
+    background-color: rgba(222, 211, 211, 0.548);
 }
+
+
+/* FOOTER */
+footer {
+    text-align: center;
+    background-color: #ffffffe7;
+    color: 333;
+    padding: 10px;
+    margin-top: 20px;
+}
+
