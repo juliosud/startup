@@ -29,7 +29,7 @@ export default function App() {
                 </Routes>
 
                 <footer>
-                    <span className="text-reset">j. ferreira</span> | 
+                    <span className="text-reset">julio ferreira</span> | 
                     <NavLink to="https://github.com/juliosud/startup">GitHub</NavLink>
                 </footer>
             </div>
