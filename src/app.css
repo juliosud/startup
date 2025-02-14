@@ -29,7 +29,7 @@ nav a:hover {
 
 
 /* BODY and MAIN */
-body {
+.body {
     font-family: "Poppins", sans-serif;
     background-color: #f8f9fa;
     margin: 0;
