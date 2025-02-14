@@ -22,3 +22,8 @@ Box containers - I wanted my app to have that look of mobile app, and this usual
 
 Looking for inspiration - In class we discussed some debugging tools, and I was able to use the dev tool to see what other websites use for their styling and then gain inspiration from their work.
 
+## REACT - Phase 1
+
+Structure - the importance of properly structuring the directories. Public for static files, and src for the files that run the heart of my react app (components, styles, lofic etc)
+
+Using HTML inside JS - instead of just vanila html, react lets me use JSX to write HTML like syntax inside js.
