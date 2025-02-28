@@ -27,3 +27,9 @@ Looking for inspiration - In class we discussed some debugging tools, and I was 
 Structure - the importance of properly structuring the directories. Public for static files, and src for the files that run the heart of my react app (components, styles, lofic etc)
 
 Using HTML inside JS - instead of just vanila html, react lets me use JSX to write HTML like syntax inside js.
+
+## REACT - Phase 2
+
+Data Persistence in react - used userState and useEffect to dynamically update componets, persist meal data in localStorage
+
+Lift state up in react by ensuring that shared data (like the user auth) was managed at higher level component.
