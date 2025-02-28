@@ -52,6 +52,36 @@ export function Meal_tracker() {
     }
   };  
 
+  const [editingIndex, setEditingIndex] = useState(null);
+  const [editMeal, setEditMeal] = useState({
+    food: '',
+    calories: '',
+    protein: '',
+    carbs: '',
+    fat: '',
+  });
+  
+  const startEditing = (index, meal) => {
+    setEditingIndex(index);
+    setEditMeal(meal);
+  };
+  
+  const handleEditChange = (field, value) => {
+    setEditMeal((prevMeal) => ({
+      ...prevMeal,
+      [field]: value,
+    }));
+  };
+  
+  const saveEdit = (index) => {
+    const updatedMeals = [...meals];
+    updatedMeals[index] = editMeal;
+    setMeals(updatedMeals);
+    setEditingIndex(null);
+    localStorage.setItem('meals', JSON.stringify(updatedMeals));
+  };
+  
+
   return (
     <main>
       <div className="box-container">
@@ -91,19 +121,77 @@ export function Meal_tracker() {
                 <tbody>
                     {meals.length > 0 ? (meals.map((meal, index) => (
                         <tr key={index}>
-                            <td>{meal.food}</td>
-                            <td>{meal.calories}</td>
-                            <td>{meal.protein}</td>
-                            <td>{meal.carbs}</td>
-                            <td>{meal.fat}</td>
-                        </tr>
+                        <td>
+                          {editingIndex === index ? (
+                            <input 
+                              type="text" 
+                              value={editMeal.food} 
+                              onChange={(e) => handleEditChange('food', e.target.value)}
+                            />
+                          ) : (
+                            meal.food
+                          )}
+                        </td>
+                        <td>
+                          {editingIndex === index ? (
+                            <input 
+                              type="number" 
+                              value={editMeal.calories} 
+                              onChange={(e) => handleEditChange('calories', e.target.value)}
+                            />
+                          ) : (
+                            meal.calories
+                          )}
+                        </td>
+                        <td>
+                          {editingIndex === index ? (
+                            <input 
+                              type="number" 
+                              value={editMeal.protein} 
+                              onChange={(e) => handleEditChange('protein', e.target.value)}
+                            />
+                          ) : (
+                            meal.protein
+                          )}
+                        </td>
+                        <td>
+                          {editingIndex === index ? (
+                            <input 
+                              type="number" 
+                              value={editMeal.carbs} 
+                              onChange={(e) => handleEditChange('carbs', e.target.value)}
+                            />
+                          ) : (
+                            meal.carbs
+                          )}
+                        </td>
+                        <td>
+                          {editingIndex === index ? (
+                            <input 
+                              type="number" 
+                              value={editMeal.fat} 
+                              onChange={(e) => handleEditChange('fat', e.target.value)}
+                            />
+                          ) : (
+                            meal.fat
+                          )}
+                        </td>
+                        <td>
+                          {editingIndex === index ? (
+                            <button onClick={() => saveEdit(index)}>Save</button>
+                          ) : (
+                            <button onClick={() => startEditing(index, meal)}>Edit</button>
+                          )}
+                        </td>
+                      </tr>
                     ))
                     ) : (
                     <tr>
-                        <td colSpan="5">No meals added yet</td>
+                        <td colSpan="6">No meals added yet</td>
                     </tr>
                     )}
                 </tbody>
+                
             </table>
         </div>
 
