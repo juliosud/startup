@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react';
 
 export function Login() {
   // State for user input
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loggedInUser, setLoggedInUser] = useState(null);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [loggedInUser, setLoggedInUser] = useState(null);
 
-  // Check localStorage for login state on page load
-  useEffect(() => {
+    useEffect(() => {
     const savedUser = localStorage.getItem('userEmail');
     if (savedUser) {
       setLoggedInUser(savedUser);
