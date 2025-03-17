@@ -9,19 +9,22 @@ const authCookieName = 'token';
 // The service port
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
-// Store users (temporary in-memory storage, can later use a database)
+// Store users
 let users = [];
 
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
-app.use(express.static('public')); // Serve frontend files
+app.use(express.static('public'));
 
 // Router for service endpoints
 const apiRouter = express.Router();
 app.use('/api', apiRouter);
 
-// 🔹 Register a new user
+
+// ________________________________END POINTS___________________________________
+
+// Register a new user
 apiRouter.post('/auth/create', async (req, res) => {
   if (await findUser('email', req.body.email)) {
     res.status(409).send({ msg: 'User already exists' });
@@ -32,7 +35,7 @@ apiRouter.post('/auth/create', async (req, res) => {
   }
 });
 
-// 🔹 Login user
+// Login user
 apiRouter.post('/auth/login', async (req, res) => {
   const user = await findUser('email', req.body.email);
   if (user && await bcrypt.compare(req.body.password, user.password)) {
@@ -44,7 +47,7 @@ apiRouter.post('/auth/login', async (req, res) => {
   res.status(401).send({ msg: 'Unauthorized' });
 });
 
-// 🔹 Logout user
+// Logout user
 apiRouter.delete('/auth/logout', async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
@@ -54,7 +57,11 @@ apiRouter.delete('/auth/logout', async (req, res) => {
   res.status(204).end();
 });
 
-// 🔹 Middleware to protect routes
+
+
+// ________________________________MIDDLEWARE___________________________________
+
+// Middleware to verify that the user is authorized to call an endpoint
 const verifyAuth = async (req, res, next) => {
   const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
@@ -64,23 +71,32 @@ const verifyAuth = async (req, res, next) => {
   }
 };
 
-// 🔹 Example of a protected route (Fetch user profile)
-apiRouter.get('/profile', verifyAuth, (req, res) => {
-  const user = users.find(u => u.token === req.cookies[authCookieName]);
-  res.send({ email: user.email });
-});
 
-// 🔹 Error handling middleware
+// get user profile
+apiRouter.get('/profile', verifyAuth, (req, res) => {
+    const user = users.find(u => u.token === req.cookies[authCookieName]);
+        if (!user) {
+      return res.status(401).send({ msg: 'Unauthorized' });
+    }
+    res.send({ email: user.email });
+  });
+  
+
+// Error handling middleware
 app.use((err, req, res, next) => {
   res.status(500).send({ type: err.name, message: err.message });
 });
 
-// 🔹 Serve index.html for unknown routes
+// Serve index.html for unknown routes
 app.use((_req, res) => {
   res.sendFile('index.html', { root: 'public' });
 });
 
-// Helper functions
+
+
+//___________________________HELPER FUNCTIONS_____________________________________
+
+// create user
 async function createUser(email, password) {
   const passwordHash = await bcrypt.hash(password, 10);
   const user = { email, password: passwordHash, token: uuid.v4() };
@@ -88,11 +104,13 @@ async function createUser(email, password) {
   return user;
 }
 
+//get user
 async function findUser(field, value) {
   if (!value) return null;
   return users.find((u) => u[field] === value);
 }
 
+// Set the auth cookie
 function setAuthCookie(res, authToken) {
   res.cookie(authCookieName, authToken, {
     secure: true,
