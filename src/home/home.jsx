@@ -1,21 +1,37 @@
 import React, { useState, useEffect } from 'react';
+import { getMeals } from '../meal_tracker/meal_api';
 
 export function Home() {
     const [nutrients, setNutrients] = useState({
-        calories: 2200,
-        protein: 136,
-        carbs: 289,
-        fat: 63,
+        calories: 0,
+        protein: 0,
+        carbs: 0,
+        fat: 0,
     });
 
     const [chatMessages, setChatMessages] = useState([]);
     const [userInput, setUserInput] = useState('');
 
     useEffect(() => {
-        const savedNutrients = JSON.parse(localStorage.getItem('nutrients'));
-        if (savedNutrients) {
-          setNutrients(savedNutrients);
+        async function fetchTodaysMeals() {
+            const allMeals = await getMeals();
+            const today = new Date().toISOString().split('T')[0];
+
+            const todaysMeals = allMeals.filter(meal => meal.date.startsWith(today));
+            
+            const totalNutrients = todaysMeals.reduce(
+                (totals, meal) => ({
+                    calories: totals.calories + Number(meal.calories),
+                    protein: totals.protein + Number(meal.protein),
+                    carbs: totals.carbs + Number(meal.carbs),
+                    fat: totals.fat + Number(meal.fat),
+                }),
+                { calories: 0, protein: 0, carbs: 0, fat: 0 }
+            );
+
+            setNutrients(totalNutrients);
         }
+        fetchTodaysMeals();
     }, []);
     
     const handleUserInput = (e) => {

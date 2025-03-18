@@ -22,6 +22,18 @@ app.use(express.static('public'));
 const apiRouter = express.Router();
 app.use('/api', apiRouter);
 
+// ________________________________MIDDLEWARE___________________________________
+
+// Middleware to verify that the user is authorized to call an endpoint
+const verifyAuth = async (req, res, next) => {
+  const user = await findUser('token', req.cookies[authCookieName]);
+  if (user) {
+    next();
+  } else {
+    res.status(401).send({ msg: 'Unauthorized' });
+  }
+};
+
 
 // ________________________________END POINTS___________________________________
 
@@ -110,17 +122,7 @@ apiRouter.delete('/meals/:id', verifyAuth, (req, res) => {
 
 
 
-// ________________________________MIDDLEWARE___________________________________
 
-// Middleware to verify that the user is authorized to call an endpoint
-const verifyAuth = async (req, res, next) => {
-  const user = await findUser('token', req.cookies[authCookieName]);
-  if (user) {
-    next();
-  } else {
-    res.status(401).send({ msg: 'Unauthorized' });
-  }
-};
 
 
 // get user profile

@@ -4,7 +4,9 @@ import './app.css';
 import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
 import { Login } from "./login/login";
 import { Home } from "./home/home";
-import { Meal_tracker } from "./meal_tracker/meal_tracker";
+//import { Meal_tracker } from "./meal_tracker/meal_tracker";
+import { MealTracker } from "./meal_tracker/meal_tracker";
+
 
 
 
@@ -24,7 +26,7 @@ export default function App() {
                 <Routes>
                     <Route path='/' element={<Login />} exact />
                     <Route path='/home' element={<Home />} />
-                    <Route path='/meal_tracker' element={<Meal_tracker />} />
+                    <Route path='/meal_tracker' element={<MealTracker />} /> 
                     <Route path='*' element={<NotFound />} />
                 </Routes>
 
