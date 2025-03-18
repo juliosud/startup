@@ -1,44 +1,48 @@
 import React from 'react';
 import './app.css';
-
-import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, NavLink, Route, Routes, useLocation } from 'react-router-dom';
 import { Login } from "./login/login";
 import { Home } from "./home/home";
-//import { Meal_tracker } from "./meal_tracker/meal_tracker";
 import { MealTracker } from "./meal_tracker/meal_tracker";
-
-
-
 
 export default function App() {
     return (
         <BrowserRouter>
-            <div className="body">
-                <header>
-                    <h1>SmartEats.AI</h1>
+            <AppContent />
+        </BrowserRouter>
+    );
+}
+
+function AppContent() {
+    const location = useLocation();
+    const hideNav = location.pathname === '/';
+
+    return (
+        <div className="body">
+            <header>
+                <h1>SmartEats.AI</h1>
+                {!hideNav && (
                     <nav>
-                        <NavLink to="/">Login</NavLink> |
                         <NavLink to="/home">Home</NavLink> |
                         <NavLink to="/meal_tracker">Meal Tracker</NavLink>
                     </nav>
-                </header>
-            
-                <Routes>
-                    <Route path='/' element={<Login />} exact />
-                    <Route path='/home' element={<Home />} />
-                    <Route path='/meal_tracker' element={<MealTracker />} /> 
-                    <Route path='*' element={<NotFound />} />
-                </Routes>
+                )}
+            </header>
 
-                <footer>
-                    <span className="text-reset">julio ferreira</span> | 
-                    <NavLink to="https://github.com/juliosud/startup">GitHub</NavLink>
-                </footer>
-            </div>
-        </BrowserRouter>
-      );
+            <Routes>
+                <Route path='/' element={<Login />} exact />
+                <Route path='/home' element={<Home />} />
+                <Route path='/meal_tracker' element={<MealTracker />} />
+                <Route path='*' element={<NotFound />} />
+            </Routes>
+
+            <footer>
+                <span className="text-reset">julio ferreira</span> | 
+                <NavLink to="https://github.com/juliosud/startup">GitHub</NavLink>
+            </footer>
+        </div>
+    );
 }
-
 
 function NotFound() {
     return <main className="container-fluid bg-secondary text-center">404: Return to sender. Address unknown.</main>;
