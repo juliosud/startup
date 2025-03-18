@@ -11,6 +11,7 @@ const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
 // Store users
 let users = [];
+let meals = [];
 
 // Middleware
 app.use(express.json());
@@ -23,6 +24,8 @@ app.use('/api', apiRouter);
 
 
 // ________________________________END POINTS___________________________________
+
+//USER ENDPOINTS
 
 // Register a new user
 apiRouter.post('/auth/create', async (req, res) => {
@@ -54,6 +57,54 @@ apiRouter.delete('/auth/logout', async (req, res) => {
     delete user.token;
   }
   res.clearCookie(authCookieName);
+  res.status(204).end();
+});
+
+//MEAL ENDPOINTS
+
+// Get all meals
+apiRouter.get('/meals', verifyAuth, (req, res) => {
+  const userMeals = meals.filter(meal => meal.userId === req.cookies[authCookieName]);
+  res.send(userMeals);
+});
+
+// Add meal
+apiRouter.post('/meals', verifyAuth, (req, res) => {
+  const meal = {
+    id: uuid.v4(),
+    userId: req.cookies[authCookieName], 
+    food: req.body.food,
+    calories: req.body.calories,
+    protein: req.body.protein,
+    carbs: req.body.carbs,
+    fat: req.body.fat,
+    date: new Date().toISOString()
+  };
+  meals.push(meal);
+  res.send(meal);
+});
+
+// Edit meal
+apiRouter.put('/meals/:id', verifyAuth, (req, res) => {
+  const meal = meals.find(m => m.id === req.params.id && m.userId === req.cookies[authCookieName]);
+  if (!meal) {
+    return res.status(404).send({ msg: 'Meal not found' });
+  }
+  meal.food = req.body.food || meal.food;
+  meal.calories = req.body.calories || meal.calories;
+  meal.protein = req.body.protein || meal.protein;
+  meal.carbs = req.body.carbs || meal.carbs;
+  meal.fat = req.body.fat || meal.fat;
+  res.send(meal);
+});
+
+// Delete meal
+apiRouter.delete('/meals/:id', verifyAuth, (req, res) => {
+  const index = meals.findIndex(m => m.id === req.params.id && m.userId === req.cookies[authCookieName]);
+  if (index === -1) {
+    return res.status(404).send({ msg: 'Meal not found' });
+  }
+  meals.splice(index, 1);
   res.status(204).end();
 });
 
