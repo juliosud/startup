@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { getMeals, addMeal, updateMeal, deleteMeal } from './meal_api';
+import { getMeals, addMeal, updateMeal, deleteMeal, logout } from './meal_api';
+import { useNavigate } from "react-router-dom"
 
 export function MealTracker() {
+  const navigate = useNavigate()
   const [meals, setMeals] = useState([]);
   const [mealInput, setMealInput] = useState({
     food: '',
@@ -99,9 +101,21 @@ export function MealTracker() {
     }
   };
 
+  const handleLogout = async () => {
+    const success = await logout()
+    if (success) {
+      navigate("/")
+    }
+  }
+
   return (
     <main>
       <div className="box-container">
+      <div>
+          <button onClick={handleLogout}>
+            Logout
+          </button>
+      </div>
         <table>
           <thead>
             <tr>

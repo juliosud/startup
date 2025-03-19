@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { getMeals } from '../meal_tracker/meal_api';
+import { getMeals, logout } from '../meal_tracker/meal_api';
+import { useNavigate } from "react-router-dom"
 
 export function Home() {
+    const navigate = useNavigate()
     const [nutrients, setNutrients] = useState({
         calories: 0,
         protein: 0,
@@ -60,9 +62,21 @@ export function Home() {
         };
     };
 
+    const handleLogout = async () => {
+        const success = await logout()
+        if (success) {
+          navigate("/")
+        }
+      }
+
     return (
         <main>
                 <div className="box-container">
+                <div>
+                  <button onClick={handleLogout}>
+                    Logout
+                  </button>
+                </div>
                     <table>
                         <thead>
                             <tr>

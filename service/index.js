@@ -72,6 +72,7 @@ apiRouter.delete('/auth/logout', async (req, res) => {
   res.status(204).end();
 });
 
+
 //MEAL ENDPOINTS
 
 // Get all meals

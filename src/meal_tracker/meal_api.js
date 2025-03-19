@@ -52,3 +52,16 @@ export async function deleteMeal(id) {
     return false;
   }
 }
+
+export async function logout() {
+  try {
+    const response = await fetch("/api/auth/logout", {
+      method: "DELETE",
+      credentials: "include",
+    });
+    return response.ok;
+  } catch (error) {
+      console.error("Error logging out:", error);
+    return false;
+  }
+}
