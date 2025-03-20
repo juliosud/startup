@@ -14,6 +14,18 @@ export function Home() {
     const [chatMessages, setChatMessages] = useState([]);
     const [userInput, setUserInput] = useState('');
 
+    //authenticate user
+    useEffect(() => {
+        fetch('/api/profile', { credentials: 'include' })
+            .then(response => {
+                if (!response.ok) {
+                    navigate('/'); 
+                }
+            })
+            .catch(() => navigate('/'));
+    }, [navigate]);
+
+    //get meals (for today)
     useEffect(() => {
         async function fetchTodaysMeals() {
             const allMeals = await getMeals();
@@ -21,7 +33,7 @@ export function Home() {
 
             const todaysMeals = allMeals.filter(meal => meal.date.startsWith(today));
             
-            const totalNutrients = todaysMeals.reduce(
+            setNutrients(todaysMeals.reduce(
                 (totals, meal) => ({
                     calories: totals.calories + Number(meal.calories),
                     protein: totals.protein + Number(meal.protein),
@@ -29,9 +41,7 @@ export function Home() {
                     fat: totals.fat + Number(meal.fat),
                 }),
                 { calories: 0, protein: 0, carbs: 0, fat: 0 }
-            );
-
-            setNutrients(totalNutrients);
+            ));
         }
         fetchTodaysMeals();
     }, []);
@@ -40,27 +50,61 @@ export function Home() {
         setUserInput(e.target.value);
     };
     
-    const handleChatSubmit = (e) => {
+    // const handleChatSubmit = (e) => {
+    //     e.preventDefault();
+    //     if (userInput.trim()) {
+    //       const userMessage = { sender: 'User', text: userInput };
+    //       const aiResponse = getAIResponse(userInput);
+    
+    //       setChatMessages([...chatMessages, userMessage, aiResponse]);
+    //       setUserInput('');
+    //     }
+    // };
+
+    const handleChatSubmit = async (e) => {
         e.preventDefault();
         if (userInput.trim()) {
-          const userMessage = { sender: 'User', text: userInput };
-          const aiResponse = getAIResponse(userInput);
-    
-          setChatMessages([...chatMessages, userMessage, aiResponse]);
-          setUserInput('');
+            const userMessage = { sender: 'User', text: userInput };
+
+            setChatMessages(prevMessages => [...prevMessages, userMessage]);
+
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({ message: userInput })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    const aiMessage = { sender: 'AI', text: data.response };
+                    setChatMessages(prevMessages => [...prevMessages, aiMessage]);
+                } else {
+                    console.error("Chatbot error:", data.error);
+                    setChatMessages(prevMessages => [...prevMessages, { sender: 'AI', text: "Error: Could not fetch response." }]);
+                }
+            } catch (error) {
+                console.error("Fetch error:", error);
+                setChatMessages(prevMessages => [...prevMessages, { sender: 'AI', text: "Network error. Please try again later." }]);
+            }
+            setUserInput('');
         }
     };
 
-    const getAIResponse = (userInput) => {
-        return {
-          sender: 'AI',
-          text: `Based on "${userInput}", I estimate:
-          - Calories: 500 kcal
-          - Protein: 25g
-          - Carbs: 60g
-          - Fat: 20g`,
-        };
-    };
+    // const getAIResponse = (userInput) => {
+    //     return {
+    //       sender: 'AI',
+    //       text: `Based on "${userInput}", I estimate:
+    //       - Calories: 500 kcal
+    //       - Protein: 25g
+    //       - Carbs: 60g
+    //       - Fat: 20g`,
+    //     };
+    // };
 
     const handleLogout = async () => {
         const success = await logout()
@@ -119,3 +163,4 @@ export function Home() {
         </main>
   );
 }
+

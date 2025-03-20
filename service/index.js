@@ -1,3 +1,4 @@
+require('dotenv').config(); // TEST
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -5,6 +6,7 @@ const bcrypt = require('bcryptjs');
 const uuid = require('uuid');
 const app = express();
 const authCookieName = 'token';
+const { spawn } = require('child_process'); //test
 
 // The service port
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
@@ -12,6 +14,7 @@ const port = process.argv.length > 2 ? process.argv[2] : 4000;
 // Store users
 let users = [];
 let meals = [];
+let conversations = {}; // test
 
 // Middleware
 app.use(express.json());
@@ -28,11 +31,59 @@ app.use('/api', apiRouter);
 const verifyAuth = async (req, res, next) => {
   const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
+    req.user = user;
     next();
   } else {
     res.status(401).send({ msg: 'Unauthorized' });
   }
 };
+//________________________________OPEN AI_________________________________
+
+// chatbot
+apiRouter.post('/chat', verifyAuth, (req, res) => {
+  const userMessage = req.body.message;
+
+  if (!userMessage || typeof userMessage !== "string") {
+    return res.status(400).json({ error: "Invalid message input" });
+  }
+  const userId = req.user.email;
+
+  if (!conversations[userId]) {
+    conversations[userId] = [
+      {
+        role: "system",
+        content: "You are a food-focused assistant, limited to food, recipes, and nutritional topics. "
+          + "Provide five recipe ideas with a title, a brief description, and estimated caloric value per serving. "
+          + "List ingredients and provide step-by-step instructions when a recipe is chosen. "
+          + "Only provide a shopping list if the user requests it. If a user mentions a dish they ate, "
+          + "estimate its nutritional breakdown (Calories, Carbs, Protein, Fat). "
+          + "If asked about non-food topics, respond: 'I'm sorry, I can only assist with food-related topics.'"
+      }
+    ];
+  }
+
+  conversations[userId].push({ role: "user", content: userMessage });
+  const conversationString = JSON.stringify(conversations[userId]);
+  const pythonProcess = spawn('python', ['chatbot.py', conversationString]);
+
+  let responseText = "";
+  pythonProcess.stdout.on('data', (data) => {
+    responseText += data.toString();
+  });
+
+  pythonProcess.stderr.on('data', (data) => {
+    console.error(`Python Error: ${data}`);
+  });
+
+  pythonProcess.on('close', (code) => {
+    if (code !== 0) {
+      return res.status(500).json({ error: "AI response failed" });
+    }
+    const aiResponse = responseText.trim();
+    conversations[userId].push({ role: "assistant", content: aiResponse });
+    res.json({ response: aiResponse });
+  });
+});
 
 
 // ________________________________END POINTS___________________________________
@@ -120,10 +171,6 @@ apiRouter.delete('/meals/:id', verifyAuth, (req, res) => {
   meals.splice(index, 1);
   res.status(204).end();
 });
-
-
-
-
 
 
 // get user profile

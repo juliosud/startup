@@ -19,13 +19,26 @@ export function MealTracker() {
     return today === mealDay;
   };
 
+  //Authenticating user
   useEffect(() => {
-    async function fetchMeals() {
-      const data = await getMeals();
-      setMeals(data.filter(meal => isToday(meal.date)));
-    }
-    fetchMeals();
+    fetch('/api/profile', { credentials: 'include' })
+      .then(response => {
+        if (!response.ok) {
+          navigate('/');
+            }
+        })
+            .catch(() => navigate('/'));
+  }, [navigate]);
+
+  //get meals (for today)
+  useEffect(() => {
+      async function fetchMeals() {
+          const data = await getMeals();
+          setMeals(data.filter(meal => isToday(meal.date)));
+      }
+      fetchMeals();
   }, []);
+
 
   const [nutrients, setNutrients] = useState({
     calories: 0,
@@ -33,6 +46,7 @@ export function MealTracker() {
     carbs: 0,
     fat: 0,
   });
+
 
   useEffect(() => {
     const totalCalories = meals.reduce((sum, meal) => sum + Number(meal.calories), 0);
@@ -48,9 +62,11 @@ export function MealTracker() {
     });
   }, [meals]);
 
+
   const handleInputChange = (e) => {
     setMealInput({ ...mealInput, [e.target.name]: e.target.value });
   };
+
 
   const addNewMeal = async (e) => {
     e.preventDefault();
@@ -63,6 +79,7 @@ export function MealTracker() {
     }
   };
 
+
   const [editingIndex, setEditingIndex] = useState(null);
   const [editMeal, setEditMeal] = useState({
     food: '',
@@ -72,10 +89,12 @@ export function MealTracker() {
     fat: '',
   });
 
+
   const startEditing = (index, meal) => {
     setEditingIndex(index);
     setEditMeal(meal);
   };
+
 
   const handleEditChange = (field, value) => {
     setEditMeal((prevMeal) => ({
@@ -83,6 +102,7 @@ export function MealTracker() {
       [field]: value,
     }));
   };
+
 
   const saveEdit = async (index) => {
     const updatedMeal = await updateMeal(editMeal.id, editMeal);
@@ -94,12 +114,14 @@ export function MealTracker() {
     }
   };
 
+
   const removeMeal = async (id) => {
     const success = await deleteMeal(id);
     if (success) {
       setMeals(meals.filter((meal) => meal.id !== id));
     }
   };
+
 
   const handleLogout = async () => {
     const success = await logout()
@@ -108,6 +130,7 @@ export function MealTracker() {
     }
   }
 
+  
   return (
     <main>
       <div className="box-container">
