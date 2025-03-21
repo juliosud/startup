@@ -1,4 +1,3 @@
-require('dotenv').config(); // TEST
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -64,7 +63,8 @@ apiRouter.post('/chat', verifyAuth, (req, res) => {
 
   conversations[userId].push({ role: "user", content: userMessage });
   const conversationString = JSON.stringify(conversations[userId]);
-  const pythonProcess = spawn('python', ['chatbot.py', conversationString]);
+  //const pythonProcess = spawn('python', ['chatbot.py', conversationString]);
+  const pythonProcess = spawn('python3', ['chatbot.py', conversationString]);
 
   let responseText = "";
   pythonProcess.stdout.on('data', (data) => {

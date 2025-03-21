@@ -33,3 +33,9 @@ Using HTML inside JS - instead of just vanila html, react lets me use JSX to wri
 Data Persistence in react - used userState and useEffect to dynamically update componets, persist meal data in localStorage
 
 Lift state up in react by ensuring that shared data (like the user auth) was managed at higher level component.
+
+## SERVICE
+
+AWS server - I know this may be simple for everyone else, but it took me some time to understand the the server in AWS is basically just a virtual machine that you can do what you want with it. So, if the case that I needed to use open ai keys to make a third party call, I needed to install in AWS the requirements for everything, like python for example.
+
+Also, I learned about using middleware to control access, authenticate, and properly handle valid users.
