@@ -116,6 +116,7 @@ export function MealTracker() {
 
 
   const removeMeal = async (id) => {
+    console.log('this is ID',id);
     const success = await deleteMeal(id);
     if (success) {
       setMeals(meals.filter((meal) => meal.id !== id));

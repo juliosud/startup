@@ -136,12 +136,13 @@ apiRouter.delete('/auth/logout', async (req, res) => {
 
 //MEAL ENDPOINTS
 
+//get all meals
 apiRouter.get('/meals', verifyAuth, async (req, res) => {
   const meals = await db.getMealsByEmail(req.user.email);
   res.send(meals);
 });
 
-
+//add a meal
 apiRouter.post('/meals', verifyAuth, async (req, res) => {
   const meal = {
     id: uuid.v4(),
@@ -174,26 +175,16 @@ apiRouter.put('/meals/:id', verifyAuth, async (req, res) => {
 
 apiRouter.delete('/meals/:id', verifyAuth, async (req, res) => {
   const mealId = req.params.id;
-  await db.deleteMeal(mealId, req.user.token);
+  await db.deleteMeal(mealId);
   res.status(204).end();
 });
 
-// get user profile
-// apiRouter.get('/profile', verifyAuth, async (req, res) => {
-//   const user = await findUser('token', req.cookies[authCookieName]);
 
-//   if (!user) {
-//     return res.status(401).send({ msg: 'Unauthorized' });
-//   }
-  
-//   res.send({ email: user.email });
-// });
 apiRouter.get('/profile', verifyAuth, (req, res) => {
   res.send({ email: req.user.email });
 });
 
   
-
 // Error handling middleware
 app.use((err, req, res, next) => {
   res.status(500).send({ type: err.name, message: err.message });

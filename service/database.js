@@ -48,8 +48,8 @@ async function updateMeal(mealId, updatedMeal) {
   await mealCollection.updateOne({ id: mealId }, { $set: updatedMeal });
 }
 
-async function deleteMeal(mealId, userId) {
-  await mealCollection.deleteOne({ id: mealId, userId });
+async function deleteMeal(mealId) {
+  await mealCollection.deleteOne({ id: mealId });
 }
 
 
