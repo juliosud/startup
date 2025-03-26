@@ -11,7 +11,7 @@ const { spawn } = require('child_process'); //test
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
 // Store users
-let users = [];
+const db = require('./database');
 let meals = [];
 let conversations = {}; // test
 
@@ -105,7 +105,11 @@ apiRouter.post('/auth/create', async (req, res) => {
 apiRouter.post('/auth/login', async (req, res) => {
   const user = await findUser('email', req.body.email);
   if (user && await bcrypt.compare(req.body.password, user.password)) {
+    // user.token = uuid.v4();
+    // setAuthCookie(res, user.token);
+    // res.send({ email: user.email });
     user.token = uuid.v4();
+    await db.updateUser(user); // persist updated token
     setAuthCookie(res, user.token);
     res.send({ email: user.email });
     return;
@@ -116,9 +120,14 @@ apiRouter.post('/auth/login', async (req, res) => {
 // Logout user
 apiRouter.delete('/auth/logout', async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
+  // if (user) {
+  //   delete user.token;
+  // }
   if (user) {
     delete user.token;
-  }
+    await db.updateUser(user);
+  }  
+
   res.clearCookie(authCookieName);
   res.status(204).end();
 });
@@ -174,13 +183,16 @@ apiRouter.delete('/meals/:id', verifyAuth, (req, res) => {
 
 
 // get user profile
-apiRouter.get('/profile', verifyAuth, (req, res) => {
-    const user = users.find(u => u.token === req.cookies[authCookieName]);
-        if (!user) {
-      return res.status(401).send({ msg: 'Unauthorized' });
-    }
-    res.send({ email: user.email });
-  });
+apiRouter.get('/profile', verifyAuth, async (req, res) => {
+  const user = await findUser('token', req.cookies[authCookieName]);
+
+  if (!user) {
+    return res.status(401).send({ msg: 'Unauthorized' });
+  }
+  
+  res.send({ email: user.email });
+});
+
   
 
 // Error handling middleware
@@ -197,19 +209,36 @@ app.use((_req, res) => {
 
 //___________________________HELPER FUNCTIONS_____________________________________
 
+// // create user
+// async function createUser(email, password) {
+//   const passwordHash = await bcrypt.hash(password, 10);
+//   const user = { email, password: passwordHash, token: uuid.v4() };
+//   users.push(user);
+//   return user;
+// }
+
 // create user
 async function createUser(email, password) {
   const passwordHash = await bcrypt.hash(password, 10);
   const user = { email, password: passwordHash, token: uuid.v4() };
-  users.push(user);
+  await db.addUser(user);
   return user;
 }
 
-//get user
+// //get user
+// async function findUser(field, value) {
+//   if (!value) return null;
+//   return users.find((u) => u[field] === value);
+// }
+
+// get user
 async function findUser(field, value) {
   if (!value) return null;
-  return users.find((u) => u[field] === value);
+  if (field === 'email') return db.getUser(value);
+  if (field === 'token') return db.getUserByToken(value);
+  return null;
 }
+
 
 // Set the auth cookie
 function setAuthCookie(res, authToken) {
