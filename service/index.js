@@ -12,7 +12,7 @@ const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
 // Store users
 const db = require('./database');
-let meals = [];
+// let meals = [];
 let conversations = {}; // test
 
 // Middleware
@@ -90,12 +90,15 @@ apiRouter.post('/chat', verifyAuth, (req, res) => {
 
 //USER ENDPOINTS
 
+
+
 // Register a new user
 apiRouter.post('/auth/create', async (req, res) => {
   if (await findUser('email', req.body.email)) {
-    res.status(409).send({ msg: 'User already exists' });
+    res.status(409).send({ msg: 'Existing user' });
   } else {
     const user = await createUser(req.body.email, req.body.password);
+
     setAuthCookie(res, user.token);
     res.send({ email: user.email });
   }
@@ -104,93 +107,89 @@ apiRouter.post('/auth/create', async (req, res) => {
 // Login user
 apiRouter.post('/auth/login', async (req, res) => {
   const user = await findUser('email', req.body.email);
-  if (user && await bcrypt.compare(req.body.password, user.password)) {
-    // user.token = uuid.v4();
-    // setAuthCookie(res, user.token);
-    // res.send({ email: user.email });
-    user.token = uuid.v4();
-    await db.updateUser(user); // persist updated token
-    setAuthCookie(res, user.token);
-    res.send({ email: user.email });
-    return;
+  if (user) {
+    if (await bcrypt.compare(req.body.password, user.password)) {
+      user.token = uuid.v4();
+      await db.updateUser(user);
+      setAuthCookie(res, user.token);
+      res.send({ email: user.email });
+      return;
+    }
   }
   res.status(401).send({ msg: 'Unauthorized' });
 });
 
+
+
 // Logout user
 apiRouter.delete('/auth/logout', async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
-  // if (user) {
-  //   delete user.token;
-  // }
   if (user) {
     delete user.token;
-    await db.updateUser(user);
-  }  
-
+    db.updateUser(user);
+  }
   res.clearCookie(authCookieName);
   res.status(204).end();
 });
 
 
+
 //MEAL ENDPOINTS
 
-// Get all meals
-apiRouter.get('/meals', verifyAuth, (req, res) => {
-  const userMeals = meals.filter(meal => meal.userId === req.cookies[authCookieName]);
-  res.send(userMeals);
+apiRouter.get('/meals', verifyAuth, async (req, res) => {
+  const meals = await db.getMealsByEmail(req.user.email);
+  res.send(meals);
 });
 
-// Add meal
-apiRouter.post('/meals', verifyAuth, (req, res) => {
+
+apiRouter.post('/meals', verifyAuth, async (req, res) => {
   const meal = {
     id: uuid.v4(),
-    userId: req.cookies[authCookieName], 
+    userEmail: req.user.email,
     food: req.body.food,
     calories: req.body.calories,
     protein: req.body.protein,
     carbs: req.body.carbs,
     fat: req.body.fat,
-    date: new Date().toISOString()
+    date: new Date().toISOString(),
   };
-  meals.push(meal);
+  await db.addMeal(meal);
   res.send(meal);
 });
 
-// Edit meal
-apiRouter.put('/meals/:id', verifyAuth, (req, res) => {
-  const meal = meals.find(m => m.id === req.params.id && m.userId === req.cookies[authCookieName]);
-  if (!meal) {
-    return res.status(404).send({ msg: 'Meal not found' });
-  }
-  meal.food = req.body.food || meal.food;
-  meal.calories = req.body.calories || meal.calories;
-  meal.protein = req.body.protein || meal.protein;
-  meal.carbs = req.body.carbs || meal.carbs;
-  meal.fat = req.body.fat || meal.fat;
-  res.send(meal);
+
+apiRouter.put('/meals/:id', verifyAuth, async (req, res) => {
+  const mealId = req.params.id;
+  const updatedMeal = {
+    food: req.body.food,
+    calories: req.body.calories,
+    protein: req.body.protein,
+    carbs: req.body.carbs,
+    fat: req.body.fat
+  };
+  await db.updateMeal(mealId, updatedMeal);
+  res.send({ id: mealId, ...updatedMeal });
 });
 
-// Delete meal
-apiRouter.delete('/meals/:id', verifyAuth, (req, res) => {
-  const index = meals.findIndex(m => m.id === req.params.id && m.userId === req.cookies[authCookieName]);
-  if (index === -1) {
-    return res.status(404).send({ msg: 'Meal not found' });
-  }
-  meals.splice(index, 1);
+
+apiRouter.delete('/meals/:id', verifyAuth, async (req, res) => {
+  const mealId = req.params.id;
+  await db.deleteMeal(mealId, req.user.token);
   res.status(204).end();
 });
 
-
 // get user profile
-apiRouter.get('/profile', verifyAuth, async (req, res) => {
-  const user = await findUser('token', req.cookies[authCookieName]);
+// apiRouter.get('/profile', verifyAuth, async (req, res) => {
+//   const user = await findUser('token', req.cookies[authCookieName]);
 
-  if (!user) {
-    return res.status(401).send({ msg: 'Unauthorized' });
-  }
+//   if (!user) {
+//     return res.status(401).send({ msg: 'Unauthorized' });
+//   }
   
-  res.send({ email: user.email });
+//   res.send({ email: user.email });
+// });
+apiRouter.get('/profile', verifyAuth, (req, res) => {
+  res.send({ email: req.user.email });
 });
 
   
@@ -209,34 +208,26 @@ app.use((_req, res) => {
 
 //___________________________HELPER FUNCTIONS_____________________________________
 
-// // create user
-// async function createUser(email, password) {
-//   const passwordHash = await bcrypt.hash(password, 10);
-//   const user = { email, password: passwordHash, token: uuid.v4() };
-//   users.push(user);
-//   return user;
-// }
 
 // create user
 async function createUser(email, password) {
   const passwordHash = await bcrypt.hash(password, 10);
-  const user = { email, password: passwordHash, token: uuid.v4() };
+  const user = {
+    email: email,
+    password: passwordHash,
+    token: uuid.v4(),
+  };
   await db.addUser(user);
   return user;
 }
 
-// //get user
-// async function findUser(field, value) {
-//   if (!value) return null;
-//   return users.find((u) => u[field] === value);
-// }
-
 // get user
 async function findUser(field, value) {
   if (!value) return null;
-  if (field === 'email') return db.getUser(value);
-  if (field === 'token') return db.getUserByToken(value);
-  return null;
+  if (field === 'token') {
+    return db.getUserByToken(value);
+  }
+  return db.getUser(value);
 }
 
 

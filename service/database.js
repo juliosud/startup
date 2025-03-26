@@ -18,7 +18,7 @@ const mealCollection = db.collection('meal');
   }
 })();
 
-// Functions for user collection
+// user functions
 function getUser(email) {
   return userCollection.findOne({ email: email });
 }
@@ -35,9 +35,31 @@ async function updateUser(user) {
   await userCollection.updateOne({ email: user.email }, { $set: user });
 }
 
+
+// meal functions
+async function addMeal(meal) {
+  await mealCollection.insertOne(meal);
+}
+
+function getMealsByEmail(userEmail) {
+  return mealCollection.find({ userEmail }).toArray();
+}
+async function updateMeal(mealId, updatedMeal) {
+  await mealCollection.updateOne({ id: mealId }, { $set: updatedMeal });
+}
+
+async function deleteMeal(mealId, userId) {
+  await mealCollection.deleteOne({ id: mealId, userId });
+}
+
+
 module.exports = {
   getUser,
   getUserByToken,
   addUser,
   updateUser,
+  addMeal,
+  getMealsByEmail,
+  updateMeal,
+  deleteMeal,
 };
