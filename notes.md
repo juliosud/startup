@@ -39,3 +39,9 @@ Lift state up in react by ensuring that shared data (like the user auth) was man
 AWS server - I know this may be simple for everyone else, but it took me some time to understand the the server in AWS is basically just a virtual machine that you can do what you want with it. So, if the case that I needed to use open ai keys to make a third party call, I needed to install in AWS the requirements for everything, like python for example.
 
 Also, I learned about using middleware to control access, authenticate, and properly handle valid users.
+
+## db
+
+This time I learned how to manage my dependencies. I know this can be something simple for people, but I was struggling to understand files like package-lokc.json.
+
+I also had to learn the differences between data bases like SQL and Mongodb, and how to properly represent my data in the different databases. 

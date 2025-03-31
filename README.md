@@ -134,21 +134,21 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Node.js/Express HTTP service** - COMPLETED (index,js)
-- [ ] **Static middleware for frontend** - COMPLETED (also in index.js)
-- [ ] **Calls to third party endpoints** - COMPLETED (The chat feature inside the Home page calls open ai)
-- [ ] **Backend service endpoints** - COMPLETED (everything inindex.js)
-- [ ] **Frontend calls service endpoints** - COMPLETED  (Check meal_tracker, home, and login folders in the front end, there I have the logic that calls the back end like in simon)
+- [x] **Node.js/Express HTTP service** - COMPLETED (index,js)
+- [x] **Static middleware for frontend** - COMPLETED (also in index.js)
+- [x] **Calls to third party endpoints** - COMPLETED (The chat feature inside the Home page calls open ai)
+- [x] **Backend service endpoints** - COMPLETED (everything inindex.js)
+- [x] **Frontend calls service endpoints** - COMPLETED  (Check meal_tracker, home, and login folders in the front end, there I have the logic that calls the back end like in simon)
 
 ## 🚀 DB/Login deliverable
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **User registration** - I did not complete this part of the deliverable.
-- [ ] **User login and logout** - I did not complete this part of the deliverable.
-- [ ] **Stores data in MongoDB** - I did not complete this part of the deliverable.
-- [ ] **Stores credentials in MongoDB** - I did not complete this part of the deliverable.
-- [ ] **Restricts functionality based on authentication** - I did not complete this part of the deliverable.
+- [x] **User registration** - COMPLETED
+- [x] **User login and logout** -COMPLETED
+- [x] **Stores data in MongoDB** - COMPLETED
+- [x] **Stores credentials in MongoDB** -COMPLETED
+- [x] **Restricts functionality based on authentication** - COMPLETED
 
 ## 🚀 WebSocket deliverable
 
