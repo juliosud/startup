@@ -5,15 +5,11 @@ const bcrypt = require('bcryptjs');
 const uuid = require('uuid');
 const app = express();
 const authCookieName = 'token';
-const { spawn } = require('child_process'); //test
+const { spawn } = require('child_process');
+const db = require('./database');
 
 // The service port
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
-
-// Store users
-const db = require('./database');
-// let meals = [];
-let conversations = {}; // test
 
 // Middleware
 app.use(express.json());
@@ -39,7 +35,7 @@ const verifyAuth = async (req, res, next) => {
 //________________________________OPEN AI_________________________________
 
 // chatbot
-apiRouter.post('/chat', verifyAuth, (req, res) => {
+apiRouter.post('/chat', verifyAuth, async (req, res) => {
   const userMessage = req.body.message;
 
   if (!userMessage || typeof userMessage !== "string") {
@@ -47,23 +43,27 @@ apiRouter.post('/chat', verifyAuth, (req, res) => {
   }
   const userId = req.user.email;
 
-  if (!conversations[userId]) {
-    conversations[userId] = [
-      {
-        role: "system",
-        content: "You are a food-focused assistant, limited to food, recipes, and nutritional topics. "
-          + "Provide five recipe ideas with a title, a brief description, and estimated caloric value per serving. "
-          + "List ingredients and provide step-by-step instructions when a recipe is chosen. "
-          + "Only provide a shopping list if the user requests it. If a user mentions a dish they ate, "
-          + "estimate its nutritional breakdown (Calories, Carbs, Protein, Fat). "
-          + "If asked about non-food topics, respond: 'I'm sorry, I can only assist with food-related topics.'"
-      }
-    ];
+  await db.addConversationMessage(userId, "user", userMessage);
+
+  let conversation = await db.getConversationHistory(userId);
+  if (conversation.length === 0) {
+    await db.addConversationMessage(userId, "system", 
+      "You are a food-focused assistant, limited to food, recipes, and nutritional topics. "
+      + "Provide five recipe ideas with a title, a brief description, and estimated caloric value per serving. "
+      + "List ingredients and provide step-by-step instructions when a recipe is chosen. "
+      + "Only provide a shopping list if the user requests it. If a user mentions a dish they ate, "
+      + "estimate its nutritional breakdown (Calories, Carbs, Protein, Fat). "
+      + "If asked about non-food topics, respond: 'I'm sorry, I can only assist with food-related topics.'"
+    );
+    conversation = await db.getConversationHistory(userId);
   }
 
-  conversations[userId].push({ role: "user", content: userMessage });
-  const conversationString = JSON.stringify(conversations[userId]);
-  //const pythonProcess = spawn('python', ['chatbot.py', conversationString]);
+  const conversationForPython = conversation.map(msg => ({
+    role: msg.role,
+    content: msg.content
+  }));
+  const conversationString = JSON.stringify(conversationForPython);
+
   const pythonProcess = spawn('python3', ['chatbot.py', conversationString]);
 
   let responseText = "";
@@ -75,12 +75,15 @@ apiRouter.post('/chat', verifyAuth, (req, res) => {
     console.error(`Python Error: ${data}`);
   });
 
-  pythonProcess.on('close', (code) => {
+  pythonProcess.on('close', async (code) => {
     if (code !== 0) {
       return res.status(500).json({ error: "AI response failed" });
     }
+
     const aiResponse = responseText.trim();
-    conversations[userId].push({ role: "assistant", content: aiResponse });
+
+    await db.addConversationMessage(userId, "assistant", aiResponse);
+
     res.json({ response: aiResponse });
   });
 });
@@ -89,8 +92,6 @@ apiRouter.post('/chat', verifyAuth, (req, res) => {
 // ________________________________END POINTS___________________________________
 
 //USER ENDPOINTS
-
-
 
 // Register a new user
 apiRouter.post('/auth/create', async (req, res) => {
@@ -118,8 +119,6 @@ apiRouter.post('/auth/login', async (req, res) => {
   }
   res.status(401).send({ msg: 'Unauthorized' });
 });
-
-
 
 // Logout user
 apiRouter.delete('/auth/logout', async (req, res) => {
@@ -158,7 +157,7 @@ apiRouter.post('/meals', verifyAuth, async (req, res) => {
   res.send(meal);
 });
 
-
+//edit meal
 apiRouter.put('/meals/:id', verifyAuth, async (req, res) => {
   const mealId = req.params.id;
   const updatedMeal = {
@@ -172,14 +171,14 @@ apiRouter.put('/meals/:id', verifyAuth, async (req, res) => {
   res.send({ id: mealId, ...updatedMeal });
 });
 
-
+//delete meal
 apiRouter.delete('/meals/:id', verifyAuth, async (req, res) => {
   const mealId = req.params.id;
   await db.deleteMeal(mealId);
   res.status(204).end();
 });
 
-
+//profile
 apiRouter.get('/profile', verifyAuth, (req, res) => {
   res.send({ email: req.user.email });
 });
@@ -198,7 +197,6 @@ app.use((_req, res) => {
 
 
 //___________________________HELPER FUNCTIONS_____________________________________
-
 
 // create user
 async function createUser(email, password) {
