@@ -7,6 +7,7 @@ const app = express();
 const authCookieName = 'token';
 const { spawn } = require('child_process');
 const db = require('./database');
+const { peerProxy } = require('./peerProxy.js');
 
 // The service port
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
@@ -229,7 +230,14 @@ function setAuthCookie(res, authToken) {
   });
 }
 
-// Start the server
-app.listen(port, () => {
+// // Start the server
+// app.listen(port, () => {
+//   console.log(`Listening on port ${port}`);
+// });
+
+const httpServer = app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
+
+peerProxy(httpServer);
+
