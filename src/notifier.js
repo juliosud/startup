@@ -19,7 +19,12 @@ const Events = {
     constructor() {
       const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
       const port = window.location.port;
-      this.socket = new WebSocket(`${protocol}://${window.location.hostname}:${port}/ws`);
+
+      const wsUrl = `${protocol}://${window.location.hostname}:${port}/ws`;
+      console.log('Attempting WebSocket connection to:', wsUrl);
+      this.socket = new WebSocket(wsUrl);
+
+    //   this.socket = new WebSocket(`${protocol}://${window.location.hostname}:${port}/ws`);
   
       this.socket.onopen = () => {
         this.receiveEvent(new EventMessage('Startup', Events.System, { msg: 'connected' }));
@@ -60,14 +65,14 @@ const Events = {
     }
   }
   
-//   export const StartupNotifier = new Notifier();
-//   export { Events };
-let notifierInstance;
-function getNotifier() {
-  if (!notifierInstance) {
-    notifierInstance = new Notifier();
-  }
-  return notifierInstance;
-}
+export const StartupNotifier = new Notifier();
+export { Events };
+// let notifierInstance;
+// function getNotifier() {
+//   if (!notifierInstance) {
+//     notifierInstance = new Notifier();
+//   }
+//   return notifierInstance;
+// }
 
-export { getNotifier, Events };
+// export { getNotifier, Events };

@@ -65,7 +65,7 @@ apiRouter.post('/chat', verifyAuth, async (req, res) => {
   }));
   const conversationString = JSON.stringify(conversationForPython);
 
-  const pythonProcess = spawn('python3', ['chatbot.py', conversationString]);
+  const pythonProcess = spawn('python', ['chatbot.py', conversationString]);
 
   let responseText = "";
   pythonProcess.stdout.on('data', (data) => {

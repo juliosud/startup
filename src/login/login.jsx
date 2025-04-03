@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Authenticated } from "./authenticated";
 import { Unauthenticated } from "./unauthenticated";
+import { StartupNotifier } from '../notifier';
 
 export function Login() {
   const [user, setUser] = useState(null);
@@ -22,6 +23,7 @@ export function Login() {
 
   const handleLoginSuccess = (email) => {
     setUser(email);
+    // StartupNotifier.broadcastEvent(email, 'system', { msg: 'user logged in' }); //TEST-------------------------------------------------------------------
     navigate('/home');
   };
 
