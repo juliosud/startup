@@ -19,6 +19,7 @@ function peerProxy(httpServer) {
     // Respond to pong messages by marking the connection alive
     socket.on('pong', () => {
       socket.isAlive = true;
+      console.log('pong'); //TEST --------------
     });
   });
 
@@ -29,6 +30,7 @@ function peerProxy(httpServer) {
 
       client.isAlive = false;
       client.ping();
+      console.log('ping'); //TEST --------------
     });
   }, 10000);
 }

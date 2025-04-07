@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { getMeals, addMeal, updateMeal, deleteMeal, logout } from './meal_api';
 import { useNavigate } from "react-router-dom"
+import { StartupNotifier, Events } from '../notifier'; // TEST _____________________________________________
+
 
 export function MealTracker() {
   const navigate = useNavigate()
@@ -40,6 +42,23 @@ export function MealTracker() {
   }, []);
 
 
+  // ws handler TEST ___________________________________________________________-_
+  useEffect(() => {
+    const handler = (event) => {
+      console.log('[MealTracker] Received Event:', event);
+      if (event.type === Events.Update) {
+        console.log('[MealTracker] Updating meals');
+        getMeals().then(data => {
+          setMeals(data.filter(meal => isToday(meal.date)));
+        });
+      }
+    };
+
+    StartupNotifier.addHandler(handler);
+    return () => StartupNotifier.removeHandler(handler);
+  }, []);
+
+
   const [nutrients, setNutrients] = useState({
     calories: 0,
     protein: 0,
@@ -74,6 +93,7 @@ export function MealTracker() {
       const newMeal = await addMeal(mealInput);
       if (newMeal) {
         setMeals([...meals, newMeal]);
+        StartupNotifier.broadcastEvent('MealTracker', Events.Update, {}); // TEST _____________________________________________
         setMealInput({ food: '', calories: '', protein: '', carbs: '', fat: '' });
       }
     }
@@ -110,6 +130,7 @@ export function MealTracker() {
       const updatedMeals = [...meals];
       updatedMeals[index] = updatedMeal;
       setMeals(updatedMeals);
+      StartupNotifier.broadcastEvent('MealTracker', Events.Update, {}); // TEST _____________________________________________
       setEditingIndex(null);
     }
   };
@@ -120,6 +141,7 @@ export function MealTracker() {
     const success = await deleteMeal(id);
     if (success) {
       setMeals(meals.filter((meal) => meal.id !== id));
+      StartupNotifier.broadcastEvent('MealTracker', Events.Update, {}); // TEST _____________________________________________
     }
   };
 

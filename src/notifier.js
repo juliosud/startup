@@ -27,10 +27,12 @@ const Events = {
     //   this.socket = new WebSocket(`${protocol}://${window.location.hostname}:${port}/ws`);
   
       this.socket.onopen = () => {
+        console.log('[WebSocket] Connected');
         this.receiveEvent(new EventMessage('Startup', Events.System, { msg: 'connected' }));
       };
   
       this.socket.onclose = () => {
+        console.log('[WebSocket] Disconnected');
         this.receiveEvent(new EventMessage('Startup', Events.System, { msg: 'disconnected' }));
       };
   
