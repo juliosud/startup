@@ -45,3 +45,9 @@ Also, I learned about using middleware to control access, authenticate, and prop
 This time I learned how to manage my dependencies. I know this can be something simple for people, but I was struggling to understand files like package-lokc.json.
 
 I also had to learn the differences between data bases like SQL and Mongodb, and how to properly represent my data in the different databases. 
+
+## ws
+
+Studying the chat code and simon really helped me understand the backend and frontend needed to use ws. The most important thing I needed to understand was how to send messages and receive messages.
+
+I also learned that you can stabilish a HTTPS connection, and upgrate it to WSS, but once you upgrade you can still keep the functionalities of your HTTPS server

@@ -154,8 +154,8 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Backend listens for WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **Frontend makes WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **Data sent over WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **WebSocket data displayed** - I did not complete this part of the deliverable.
-- [ ] **Application is fully functional** - I did not complete this part of the deliverable.
+- [x] **Backend listens for WebSocket connection**  - COMPLETED Check index.js at the bottom, and also peeProxy.js in the service folder
+- [x] **Frontend makes WebSocket connection**  - COMPLETED Check the meal_tracker folder in the src folder. You will find the meal_tracker.jsx and the notifier.js, these files contain my ws logic
+- [x] **Data sent over WebSocket connection**  - COMPLETED check use effect inside meal_tracker.jsx and also addMeal inside meal_tracker.jsx
+- [x] **WebSocket data displayed**  - COMPLETED Check the last div inside the meal_tracker.jsx
+- [x] **Application is fully functional**  - COMPLETED There is no place holder. Everything works properly
