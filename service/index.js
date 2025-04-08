@@ -139,6 +139,7 @@ apiRouter.delete('/auth/logout', async (req, res) => {
 //get all meals
 apiRouter.get('/meals', verifyAuth, async (req, res) => {
   const meals = await db.getMealsByEmail(req.user.email);
+  console.log('[GET /meals] Meals requested by:', req.user.email);
   res.send(meals);
 });
 

@@ -15,6 +15,11 @@ export function MealTracker() {
     fat: '',
   });
 
+  // TEST _____________________________________________________________
+  const [notifications, setNotifications] = useState([]);
+
+
+
   const isToday = (mealDate) => {
     const today = new Date().toISOString().split('T')[0];
     const mealDay = new Date(mealDate).toISOString().split('T')[0];
@@ -41,19 +46,18 @@ export function MealTracker() {
       fetchMeals();
   }, []);
 
-
-  // ws handler TEST ___________________________________________________________-_
+  //WebSocket USE EFFECT TEST ____________________________________________________
   useEffect(() => {
     const handler = (event) => {
-      console.log('[MealTracker] Received Event:', event);
-      if (event.type === Events.Update) {
-        console.log('[MealTracker] Updating meals');
-        getMeals().then(data => {
-          setMeals(data.filter(meal => isToday(meal.date)));
-        });
+      if (event.type === 'system') {
+        console.log('[WS SYSTEM EVENT]', event.value.msg);
+      } else if (event.type === Events.Message) {
+        console.log('[WS MESSAGE]', event.value);
+        const message = `${event.value.user} added ${event.value.food}`;
+        setNotifications((prev) => [...prev, message]);
       }
     };
-
+  
     StartupNotifier.addHandler(handler);
     return () => StartupNotifier.removeHandler(handler);
   }, []);
@@ -65,6 +69,7 @@ export function MealTracker() {
     carbs: 0,
     fat: 0,
   });
+
 
 
   useEffect(() => {
@@ -93,9 +98,15 @@ export function MealTracker() {
       const newMeal = await addMeal(mealInput);
       if (newMeal) {
         setMeals([...meals, newMeal]);
-        StartupNotifier.broadcastEvent('MealTracker', Events.Update, {}); // TEST _____________________________________________
+        // TEST _____________________________________________________________
+        StartupNotifier.broadcastEvent('MealTracker', Events.Message, {
+          user: newMeal.userEmail,
+          food: newMeal.food,
+        });
+
         setMealInput({ food: '', calories: '', protein: '', carbs: '', fat: '' });
       }
+
     }
   };
 
@@ -130,7 +141,6 @@ export function MealTracker() {
       const updatedMeals = [...meals];
       updatedMeals[index] = updatedMeal;
       setMeals(updatedMeals);
-      StartupNotifier.broadcastEvent('MealTracker', Events.Update, {}); // TEST _____________________________________________
       setEditingIndex(null);
     }
   };
@@ -141,7 +151,6 @@ export function MealTracker() {
     const success = await deleteMeal(id);
     if (success) {
       setMeals(meals.filter((meal) => meal.id !== id));
-      StartupNotifier.broadcastEvent('MealTracker', Events.Update, {}); // TEST _____________________________________________
     }
   };
 
@@ -298,7 +307,15 @@ export function MealTracker() {
           </div>
           <button type="submit">Add Meal</button>
         </form>
-      </div>  
+      </div> 
+      <div className="box-container">
+        <h3>Meal Activity</h3>
+        <ul>
+          {notifications.map((note, index) => (
+            <li key={index}>{note}</li>
+          ))}
+        </ul>
+      </div> 
     </main>
   );
 }
